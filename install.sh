@@ -4,13 +4,19 @@ set -e
 echo "Installing Over Daily Routine..."
 
 if ! command -v docker >/dev/null 2>&1; then
-  echo "Docker not found. Install Docker first."
+  echo "Docker not found. Please install Docker first."
   exit 1
 fi
 
-mkdir -p /opt/over
+if [ ! -d /opt/over ]; then
+ mkdir -p /opt/over
+ git clone https://github.com/gadovering-dotcom/over.git /opt/over
+else
+ cd /opt/over
+ git pull
+fi
+
 cd /opt/over
+docker compose up -d --build
 
-git clone https://github.com/gadovering-dotcom/over.git . 2>/dev/null || git pull
-
-echo "Over installation base completed."
+echo "Over is running."
